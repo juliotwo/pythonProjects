@@ -12,7 +12,7 @@ class MyClass:
         self.coin = coin
         self.limitSell= int(limitSell)
         self.limitBuy=int(limitBuy)
-        self.amountToBuy= amountToBuy
+        self.amountToBuy=float(amountToBuy)
         self.buyAvailable= buyAvailable
         self.sellAvailable = sellAvailable
         while True:

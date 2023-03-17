@@ -5,13 +5,35 @@ from tauros_api import TaurosAPI
 # api_secret = 'OWEwNjQ5YzJlYWJkMWFmMDU5Y2YwZjg3NzYzYzIwNGU1MTRhZTYyMGViN2M4NGM2NWMxYjFmMmU1NzdlNTc4OA=='
 # Master
 
-# api_key = '003d3a5499214d8d80e2a96ed8af59133ac8e456'
-# api_secret = 'NTZkZDBjYjEzMWUyMTU0YjZkODgzNTU0M2UzYTM2YTFhNTY3YjI5OTJkYzRlZjIzZWI4MGI5ODhlNGU4YjYxYQ=='
+api_key = ''
+api_secret = ''
 
 
-api_key=input("Pon tu api\n")
-api_secret=input("Pon tu api\n")
+# api_key=input("Pon tu api\n")
+# api_secret=input("Pon tu api\n")
 tauros = TaurosAPI(api_key, api_secret, staging=False) # default staging=False
+
+def get_order_market(coin,currency,side,amount=None,value=None):
+    path = '/otc/v1/spot-trade/quote'
+    data = {
+        "market": coin + "-" + currency,
+        "side":side,
+    }
+    
+    
+    if (amount): 
+        data["amount"] = str(amount) 
+    else: 
+        data["value"] =  str(value) 
+    try:
+        print(data)
+        response = tauros.post(path, data)
+        print("response")
+        print(response.body)
+    except NameError:
+        print(NameError)
+
+     
 
 def putOrderLimit(price, amount,side,coin):
     path = '/api/v1/trading/placeorder/'
@@ -24,16 +46,20 @@ def putOrderLimit(price, amount,side,coin):
     }
     response = tauros.post(path, data)
     status=response.body
-    return status
+    print("STATUS")
+    print(status)
+    return
    
  
-def getOrders(coin):
+def getOrders(coin,side):
     path="/api/v1/trading/myopenorders/"
     response=tauros.get(path)
     body = response.body
     data= body["data"]
-    filterData=list(filter(lambda x: x["left_coin"] ==coin, data))
-    return filterData
+    filter_data=list(filter(lambda x: x["left_coin"] ==coin, data))
+    filter_by_side=list(filter(lambda x: x["side"] ==side, filter_data))
+    return filter_by_side
+
 def getAllOrders():
     path="/api/v1/trading/myopenorders/"
     response=tauros.get(path)
@@ -71,5 +97,5 @@ def closeAllOrders(orders):
         idOrder=order["order_id"]
         closeOrder(idOrder)
 
-# if __name__ == "__main__":
-#    TaurosTransfer("300","lizehtalejandra@gmail.com","MXN")
+if __name__ == "__main__":
+   get_order_market("BTC","USDC","BUY",None,5)

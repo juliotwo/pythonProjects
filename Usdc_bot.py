@@ -6,8 +6,8 @@ import requests
 from ApiTauros import getOrders, putOrderLimit,closeAllOrders
 # bids compra// asks venta
 coin="USDC"
-limitPercentageSell=10
-limitPercentageBuy=5
+limitPercentageSell=3
+limitPercentageBuy=3
 amountToBuy="100"
 buyAvailable=True
 sellAvailable=True
