@@ -11,11 +11,10 @@ from dotenv import dotenv_values, load_dotenv
 load_dotenv()
 
 config = dotenv_values(".env")
-print(config["TEST"])
 
 #key y secret
-api_key = ""
-api_secret = ""
+api_key = config["API_KEY_BINANCE"]
+api_secret = config["API_SECRET_BINANCE"]
 
 from binance.spot import Spot
 
@@ -61,7 +60,7 @@ def get_data_by_last_trade(trades):
 
 def get_last_trades(symbol):
     params = {
-    'limit': 2
+    'limit': 1
     }
     trades=client.my_trades(symbol,**params)
     return trades
@@ -158,11 +157,9 @@ def principal_bot():
     current_price = get_last_price(symbolPrincipal)
     side_last_trade = get_side_by_last_trade(is_buyer)
     can_execute = can_execute_trade(price_last_trade,current_price,side_last_trade)
-  
     side_to_trade = get_trade_side(is_buyer)
 
     if can_execute:
-        print("execuete")
         create_market_order(symbolPrincipal,side_to_trade.value)
     else:
         can_execute_trade_24h()
@@ -170,8 +167,8 @@ def principal_bot():
     
 
 
-# while True:
-#     print("Bot init")
-#     principal_bot()
-#     # Esperar 10 segundos antes de repetir la consulta
-#     time.sleep(10)
+while True:
+    print("Bot init")
+    principal_bot()
+    # Esperar 10 segundos antes de repetir la consulta
+    time.sleep(10)
